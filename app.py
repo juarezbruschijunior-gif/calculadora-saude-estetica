@@ -1,89 +1,86 @@
 import streamlit as st
-import streamlit.components.v1 as components
 
-# 1. CONFIGURAÇÃO DA PÁGINA
-st.set_page_config(page_title="BioSaúde & Estética - Calculadora de IMC", page_icon="⚖️")
+# 1. Configurações de SEO e Identidade Visual Profissional
+st.set_page_config(page_title="BioEstética - Saúde e Metabolismo", page_icon="⚖️")
 
-# 2. ADSENSE (Obrigatório para gerar lucro)
-components.html(
-    """
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3241373482970085"
-     crossorigin="anonymous"></script>
-    """,
-    height=0,
-)
+# Estilo Visual Profissional (Clean e Confiável)
+st.markdown("""
+    <style>
+    .main { background-color: #ffffff; }
+    .stButton>button { background-color: #d4a373; color: white; border-radius: 8px; width: 100%; }
+    h1, h2, h3 { color: #588157; }
+    .info-box { background-color: #f1f8e9; padding: 20px; border-radius: 10px; border-left: 5px solid #588157; }
+    </style>
+    """, unsafe_allow_html=True)
 
-# 3. MENU LATERAL PROFISSIONAL
-st.sidebar.title("💎 BioEstética Menu")
-aba = st.sidebar.radio("Navegar:", ["Calculadora de IMC", "Artigos de Saúde", "Sobre a Especialista", "Privacidade"])
+# 2. Menu Lateral de Navegação (Essencial para o AdSense)
+st.sidebar.title("🌿 Menu BioEstética")
+aba = st.sidebar.radio("Selecione uma seção:", 
+                       ["Calculadora Metabólica", "Artigos: Saúde e Peso", 
+                        "Sobre a Especialista", "Políticas de Privacidade"])
 
-if aba == "Calculadora de IMC":
-    st.title("⚖️ Calculadora de Índice de Massa Corporal (IMC)")
-    st.write("Ferramenta de análise corporal com base em parâmetros biométricos.")
+if aba == "Calculadora Metabólica":
+    st.title("⚖️ Calculadora de Calorias e IMC")
+    st.write("Calcule suas necessidades energéticas diárias e seu índice de massa corporal com precisão.")
     
-    # Imagem profissional de estética/saúde
-    st.image("https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1000&auto=format&fit=crop", caption="Saúde Integrativa e Estética Avançada")
+    with st.container():
+        col1, col2 = st.columns(2)
+        with col1:
+            peso = st.number_input("Seu Peso (kg):", min_value=30.0, value=70.0)
+            idade = st.number_input("Sua Idade:", min_value=15, value=30)
+        with col2:
+            altura = st.number_input("Sua Altura (cm):", min_value=100, value=170)
+            sexo = st.selectbox("Sexo Biológico:", ["Feminino", "Masculino"])
+    
+    atividade = st.selectbox("Nível de Atividade Física:", 
+                             ["Sedentário", "Leve (1-2 dias/sem)", "Moderado (3-5 dias/sem)", "Intenso (Todo dia)"])
 
-    st.write("---")
-    col1, col2 = st.columns(2)
-    with col1:
-        peso = st.number_input("Peso (kg):", min_value=10.0, value=70.0, step=0.1)
-        altura = st.number_input("Altura (m):", min_value=0.5, value=1.70, step=0.01)
-    with col2:
-        idade = st.number_input("Idade:", min_value=1, value=30, step=1)
-        sexo = st.selectbox("Sexo:", ["Feminino", "Masculino"])
-
-    if st.button("Analisar Composição Corporal"):
-        imc = peso / (altura ** 2)
-        st.subheader(f"Seu IMC: {imc:.2f}")
-
-        if imc < 18.5:
-            st.warning("Classificação: Abaixo do peso")
-            st.write("💡 **Dica:** Procure um plano alimentar para ganho de massa magra e equilíbrio nutricional.")
-        elif 18.5 <= imc < 24.9:
-            st.success("Classificação: Peso Normal")
-            st.write("💡 **Dica:** Parabéns! Mantenha a prática de exercícios e uma dieta rica em antioxidantes.")
-        elif 25 <= imc < 29.9:
-            st.warning("Classificação: Sobrepeso")
-            st.write("💡 **Dica:** Pequenos ajustes na rotina, como reduzir açúcares processados, podem prevenir a evolução para obesidade.")
+    if st.button("Analisar Metabolismo"):
+        # Cálculo Simplificado de Calorias (Harris-Benedict)
+        if sexo == "Feminino":
+            tmb = 655 + (9.6 * peso) + (1.8 * (altura/100)) - (4.7 * idade)
         else:
-            st.error("Classificação: Obesidade")
-            st.write("💡 **Dica:** É recomendável um acompanhamento multidisciplinar para reduzir riscos inflamatórios e metabólicos.")
+            tmb = 66 + (13.7 * peso) + (5 * (altura/100)) - (6.8 * idade)
+        
+        imc = peso / ((altura/100)**2)
+        
+        st.success(f"Seu IMC é: **{imc:.1f}**")
+        st.info(f"Sua Taxa Metabólica Basal é de aproximadamente **{int(tmb)} calorias/dia**.")
+        st.write("Nota: Este cálculo é uma estimativa. Consulte sempre um profissional.")
 
-elif aba == "Artigos de Saúde":
-    st.title("🔬 Artigos e Visão Biomédica")
+elif aba == "Artigos: Saúde e Peso":
+    st.title("📚 Conteúdo Educativo e Bem-Estar")
+    st.markdown("""
+    <div class='info-box'>
+    <h3>Como acelerar seu metabolismo de forma saudável</h3>
+    Para que o corpo funcione em sua máxima performance, não basta apenas contar calorias. A hidratação correta, o sono reparador e a ingestão equilibrada de micronutrientes são fundamentais.
     
-    st.image("https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=1000&auto=format&fit=crop", caption="Análise Clínica e Bem-estar")
+    <h3>O que é o IMC?</h3>
+    O Índice de Massa Corporal é uma medida internacional usada para calcular se uma pessoa está no peso ideal. Embora útil, ele não distingue massa gorda de massa magra, por isso deve ser analisado em conjunto com outros exames biomédicos.
     
-    st.header("1. Os Perigos da Obesidade")
-    st.write("""
-    A obesidade não é apenas uma questão estética, mas uma doença crônica inflamatória. Ela aumenta drasticamente o risco de:
-    * **Doenças Cardiovasculares:** O excesso de gordura visceral sobrecarrega o coração.
-    * **Diabetes Tipo 2:** A resistência à insulina é uma consequência direta do tecido adiposo em excesso.
-    * **Problemas Articulares:** O sobrepeso causa desgaste prematuro em joelhos e coluna.
-    """)
-
-    st.header("2. A Estética como Aliada da Saúde")
-    st.write("""
-    Procedimentos estéticos avançados auxiliam na redução de gordura localizada e melhora da autoestima, 
-    mas devem sempre ser acompanhados de hábitos saudáveis para resultados duradouros.
-    """)
+    <h3>Dicas para o Dia a Dia:</h3>
+    * Priorize alimentos integrais e proteínas de alto valor biológico.
+    * Mantenha uma rotina de exercícios resistidos para preservar a massa muscular.
+    * Evite dietas restritivas sem acompanhamento profissional.
+    </div>
+    """, unsafe_allow_html=True)
 
 elif aba == "Sobre a Especialista":
-    st.title("💎 Especialista Responsável")
-    st.write("Esta página conta com a curadoria técnica de:")
-    st.subheader("Vanusa Cigognini")
-    st.write("**Biomédica Esteta**")
+    st.title("👩‍⚕️ Vanusa Cigognini Biomédica")
     st.write("""
-    Especialista em saúde integrativa e procedimentos de alta performance estética. 
-    Focada em resultados que unem beleza e equilíbrio biológico.
+    Especialista em saúde integrativa e estética avançada. 
+    Este portal foi desenvolvido para oferecer ferramentas de autocuidado e informações baseadas em evidências para quem busca uma vida mais equilibrada e saudável.
     """)
 
-elif aba == "Privacidade":
-    st.title("Política de Privacidade")
-    st.write("Este site utiliza cookies para monetização via Google AdSense. Não coletamos dados pessoais sensíveis.")
+elif aba == "Políticas de Privacidade":
+    st.title("🔒 Privacidade e Termos")
+    st.write("""
+    Este site cumpre todas as normas do Google AdSense. 
+    * Não coletamos dados de saúde sensíveis.
+    * Utilizamos cookies para análise de tráfego e exibição de anúncios.
+    * Todas as informações geradas nas calculadoras são para fins informativos.
+    """)
 
-# 4. RODAPÉ DE AUTORIDADE (Personalizado com o nome da Vanusa)
-st.write("---")
-st.caption("Desenvolvido por **BioEstética Digital**")
-st.caption("Referência Técnica: **Vanusa Cigognini - Biomédica Esteta** © 2026")
+# 3. Rodapé com Assinatura Profissional (Crucial para o Google)
+st.markdown("---")
+st.markdown("<p style='text-align: center;'>© 2026 Vanusa Cigognini Biomédica | Saúde e Estética Integrativa</p>", unsafe_allow_html=True)
